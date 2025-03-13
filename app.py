@@ -12,6 +12,3 @@ def home():
 @app.route('/<path:filename>')
 def serve_image(filename):
     return send_from_directory(os.getcwd(), filename)
-
-if __name__ == '__main__':
-    app.run(debug=True)
