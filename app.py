@@ -1,14 +1,17 @@
-from flask import Flask, send_from_directory
+from flask import Flask, render_template, send_from_directory
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', static_url_path='')
 
-# Serve the static index.html file
 @app.route('/')
 def home():
-    return send_from_directory(os.getcwd(), 'index.html')
+    return app.send_static_file('index.html')
 
-# Serve images from the main folder (e.g., image1.jpg, image2.jpg)
+# This route ensures images in the same directory as the HTML are served correctly
 @app.route('/<path:filename>')
-def serve_image(filename):
-    return send_from_directory(os.getcwd(), filename)
+def serve_static(filename):
+    return send_from_directory('.', filename)
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
